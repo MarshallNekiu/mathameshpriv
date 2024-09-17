@@ -1,0 +1,11 @@
+[gd_resource type="SphereMesh" load_steps=2 format=3 uid="uid://dg6g1udkgtthi"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jhb1t"]
+shading_mode = 0
+
+[resource]
+material = SubResource("StandardMaterial3D_jhb1t")
+radius = 0.05
+height = 0.1
+radial_segments = 8
+rings = 16
