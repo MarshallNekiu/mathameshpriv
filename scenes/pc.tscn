@@ -1,0 +1,697 @@
+[gd_scene load_steps=9 format=3 uid="uid://dtjjaxpo2obnd"]
+
+[ext_resource type="Script" path="res://scripts/control_panel.gd" id="1_l85w3"]
+[ext_resource type="Texture2D" uid="uid://biwn8pblqqu5o" path="res://icon.svg" id="2_5l2hq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hva2q"]
+no_depth_test = true
+shading_mode = 0
+
+[sub_resource type="World3D" id="World3D_pa87d"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_veoce"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_361c4"]
+
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_iifin"]
+shading_mode = 0
+albedo_texture = ExtResource("2_5l2hq")
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_triplanar_sharpness = 150.0
+
+[sub_resource type="World3D" id="World3D_jhlur"]
+
+[node name="PC" type="HBoxContainer" node_paths=PackedStringArray("main")]
+script = ExtResource("1_l85w3")
+main = NodePath("")
+orb_line = PackedVector3Array(0, 0, -1, 0, 0, 0.1, 0.1, 0, 0, 0, 0.1, 0, -0.1, 0, 0, 0, -0.1, 0)
+orb_line_material = SubResource("StandardMaterial3D_hva2q")
+
+[node name="SVC" type="SubViewportContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+stretch = true
+
+[node name="SV" type="SubViewport" parent="SVC"]
+world_3d = SubResource("World3D_pa87d")
+handle_input_locally = false
+size = Vector2i(2, 2)
+render_target_update_mode = 4
+
+[node name="Cam" type="Camera3D" parent="SVC/SV"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 2)
+
+[node name="Translate" type="RigidBody3D" parent="SVC/SV"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
+gravity_scale = 0.0
+angular_damp = 5.0
+
+[node name="Collision" type="CollisionShape3D" parent="SVC/SV/Translate"]
+shape = SubResource("SphereShape3D_veoce")
+
+[node name="Mesh" type="MeshInstance3D" parent="SVC/SV/Translate"]
+mesh = SubResource("SphereMesh_361c4")
+surface_material_override/0 = SubResource("ORMMaterial3D_iifin")
+
+[node name="Trigger" type="GridContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 4
+columns = 10
+
+[node name="Current" type="VBoxContainer" parent="Trigger"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+
+[node name="Save" type="Button" parent="Trigger/Current"]
+layout_mode = 2
+text = "Save"
+
+[node name="Surface" type="HBoxContainer" parent="Trigger/Current"]
+layout_mode = 2
+
+[node name="Focus" type="SpinBox" parent="Trigger/Current/Surface"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+max_value = 0.0
+prefix = "Surface"
+
+[node name="Remove" type="Button" parent="Trigger/Current/Surface"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+text = "-"
+
+[node name="Add" type="Button" parent="Trigger/Current/Surface"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+text = "+"
+
+[node name="Layer" type="HBoxContainer" parent="Trigger/Current"]
+layout_mode = 2
+
+[node name="Focus" type="SpinBox" parent="Trigger/Current/Layer"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+max_value = 0.0
+prefix = "Layer"
+
+[node name="Remove" type="Button" parent="Trigger/Current/Layer"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+text = "-"
+
+[node name="Add" type="Button" parent="Trigger/Current/Layer"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+text = "+"
+
+[node name="Instance" type="VBoxContainer" parent="Trigger"]
+layout_mode = 2
+
+[node name="Mode" type="OptionButton" parent="Trigger/Instance"]
+layout_mode = 2
+selected = 0
+allow_reselect = true
+item_count = 2
+popup/item_0/text = "Add"
+popup/item_1/text = "Connect"
+popup/item_1/id = 1
+
+[node name="Class" type="OptionButton" parent="Trigger/Instance"]
+layout_mode = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "Vertex"
+popup/item_1/text = "Bone"
+popup/item_1/id = 1
+
+[node name="Component" type="Button" parent="Trigger/Instance"]
+layout_mode = 2
+toggle_mode = true
+text = "Component"
+
+[node name="Focus" type="VBoxContainer" parent="Trigger"]
+layout_mode = 2
+
+[node name="Mode" type="OptionButton" parent="Trigger/Focus"]
+layout_mode = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "Select"
+popup/item_1/text = "Deselect"
+popup/item_1/id = 1
+
+[node name="Class" type="VBoxContainer" parent="Trigger/Focus"]
+layout_mode = 2
+
+[node name="Surface" type="CheckButton" parent="Trigger/Focus/Class"]
+layout_mode = 2
+text = "Surface"
+
+[node name="Vertex" type="CheckButton" parent="Trigger/Focus/Class"]
+layout_mode = 2
+button_pressed = true
+text = "Vertex"
+
+[node name="Bone" type="CheckButton" parent="Trigger/Focus/Class"]
+layout_mode = 2
+text = "Bone"
+
+[node name="Connectable" type="CheckBox" parent="Trigger/Focus"]
+layout_mode = 2
+button_pressed = true
+text = "Connectable"
+
+[node name="Move" type="VBoxContainer" parent="Trigger"]
+layout_mode = 2
+
+[node name="Move" type="Button" parent="Trigger/Move"]
+layout_mode = 2
+text = "Move"
+
+[node name="Remove" type="Button" parent="Trigger/Move"]
+layout_mode = 2
+text = "Remove"
+
+[node name="Attachment" type="VBoxContainer" parent="Trigger"]
+layout_mode = 2
+
+[node name="Attach" type="HBoxContainer" parent="Trigger/Attachment"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Trigger/Attachment/Attach"]
+layout_mode = 2
+text = "Attach"
+
+[node name="Layer" type="SpinBox" parent="Trigger/Attachment/Attach"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+prefix = "Layer"
+
+[node name="Detach" type="Button" parent="Trigger/Attachment"]
+layout_mode = 2
+text = "Detach"
+
+[node name="Paint" type="VBoxContainer" parent="Trigger"]
+layout_mode = 2
+
+[node name="Mode" type="OptionButton" parent="Trigger/Paint"]
+layout_mode = 2
+selected = 0
+allow_reselect = true
+item_count = 2
+popup/item_0/text = "Paint"
+popup/item_1/text = "Erase"
+popup/item_1/id = 1
+
+[node name="UV" type="Button" parent="Trigger/Paint"]
+layout_mode = 2
+toggle_mode = true
+text = "UV"
+
+[node name="HBC" type="HBoxContainer" parent="Trigger/Paint"]
+layout_mode = 2
+
+[node name="Color" type="ColorPickerButton" parent="Trigger/Paint/HBC"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Color"
+
+[node name="Check" type="CheckButton" parent="Trigger/Paint/HBC"]
+layout_mode = 2
+
+[node name="HBC2" type="HBoxContainer" parent="Trigger/Paint"]
+layout_mode = 2
+
+[node name="Bone" type="SpinBox" parent="Trigger/Paint/HBC2"]
+layout_mode = 2
+size_flags_horizontal = 3
+allow_greater = true
+
+[node name="Check" type="CheckButton" parent="Trigger/Paint/HBC2"]
+layout_mode = 2
+
+[node name="Request" type="VBoxContainer" parent="Trigger"]
+layout_mode = 2
+
+[node name="Submit" type="Button" parent="Trigger/Request"]
+layout_mode = 2
+text = "Submit"
+
+[node name="Rest" type="Button" parent="Trigger/Request"]
+layout_mode = 2
+text = "SkeletonRest"
+
+[node name="Camera" type="VBoxContainer" parent="Trigger"]
+layout_mode = 2
+
+[node name="Align" type="CheckButton" parent="Trigger/Camera"]
+layout_mode = 2
+button_pressed = true
+text = "Align"
+
+[node name="Size" type="SpinBox" parent="Trigger/Camera"]
+layout_mode = 2
+min_value = 0.01
+step = 0.001
+value = 8.0
+prefix = "Size"
+custom_arrow_step = 0.02
+
+[node name="Fov" type="SpinBox" parent="Trigger/Camera"]
+layout_mode = 2
+min_value = 1.0
+max_value = 179.0
+step = 0.001
+value = 75.0
+prefix = "Fov"
+custom_arrow_step = 0.02
+
+[node name="Transform" type="TabContainer" parent="Trigger"]
+layout_mode = 2
+current_tab = 1
+clip_tabs = false
+
+[node name="Camera" type="VBoxContainer" parent="Trigger/Transform"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 16
+metadata/_tab_index = 0
+
+[node name="Perspective" type="VBoxContainer" parent="Trigger/Transform/Camera"]
+layout_mode = 2
+
+[node name="Position" type="HBoxContainer" parent="Trigger/Transform/Camera/Perspective"]
+layout_mode = 2
+
+[node name="X" type="SpinBox" parent="Trigger/Transform/Camera/Perspective/Position"]
+layout_mode = 2
+min_value = -100.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 0.01
+
+[node name="Y" type="SpinBox" parent="Trigger/Transform/Camera/Perspective/Position"]
+layout_mode = 2
+min_value = -100.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 0.01
+
+[node name="Z" type="SpinBox" parent="Trigger/Transform/Camera/Perspective/Position"]
+layout_mode = 2
+min_value = -100.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 0.01
+
+[node name="Rotation" type="HBoxContainer" parent="Trigger/Transform/Camera/Perspective"]
+layout_mode = 2
+
+[node name="X" type="SpinBox" parent="Trigger/Transform/Camera/Perspective/Rotation"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 1.0
+
+[node name="Y" type="SpinBox" parent="Trigger/Transform/Camera/Perspective/Rotation"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 1.0
+
+[node name="Z" type="SpinBox" parent="Trigger/Transform/Camera/Perspective/Rotation"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 1.0
+
+[node name="Orthogonal" type="VBoxContainer" parent="Trigger/Transform/Camera"]
+layout_mode = 2
+
+[node name="Position" type="HBoxContainer" parent="Trigger/Transform/Camera/Orthogonal"]
+layout_mode = 2
+
+[node name="X" type="SpinBox" parent="Trigger/Transform/Camera/Orthogonal/Position"]
+layout_mode = 2
+min_value = -100.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 0.01
+
+[node name="Y" type="SpinBox" parent="Trigger/Transform/Camera/Orthogonal/Position"]
+layout_mode = 2
+min_value = -100.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 0.01
+
+[node name="Rotation" type="HBoxContainer" parent="Trigger/Transform/Camera/Orthogonal"]
+layout_mode = 2
+
+[node name="X" type="SpinBox" parent="Trigger/Transform/Camera/Orthogonal/Rotation"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 1.0
+
+[node name="Y" type="SpinBox" parent="Trigger/Transform/Camera/Orthogonal/Rotation"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 1.0
+
+[node name="Z" type="SpinBox" parent="Trigger/Transform/Camera/Orthogonal/Rotation"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 1.0
+
+[node name="Canvas&Layer" type="VBoxContainer" parent="Trigger/Transform"]
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Canvas" type="VBoxContainer" parent="Trigger/Transform/Canvas&Layer"]
+layout_mode = 2
+
+[node name="Position" type="HBoxContainer" parent="Trigger/Transform/Canvas&Layer/Canvas"]
+layout_mode = 2
+
+[node name="X" type="SpinBox" parent="Trigger/Transform/Canvas&Layer/Canvas/Position"]
+layout_mode = 2
+min_value = -100.0
+step = 0.1
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 0.01
+
+[node name="Y" type="SpinBox" parent="Trigger/Transform/Canvas&Layer/Canvas/Position"]
+layout_mode = 2
+min_value = -100.0
+step = 0.1
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 0.01
+
+[node name="Z" type="SpinBox" parent="Trigger/Transform/Canvas&Layer/Canvas/Position"]
+layout_mode = 2
+min_value = -100.0
+step = 0.1
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 0.01
+
+[node name="Rotation" type="HBoxContainer" parent="Trigger/Transform/Canvas&Layer/Canvas"]
+layout_mode = 2
+
+[node name="X" type="SpinBox" parent="Trigger/Transform/Canvas&Layer/Canvas/Rotation"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 1.0
+
+[node name="Y" type="SpinBox" parent="Trigger/Transform/Canvas&Layer/Canvas/Rotation"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 1.0
+
+[node name="Z" type="SpinBox" parent="Trigger/Transform/Canvas&Layer/Canvas/Rotation"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 1.0
+
+[node name="HBC" type="HBoxContainer" parent="Trigger/Transform/Canvas&Layer/Canvas"]
+layout_mode = 2
+
+[node name="Input" type="CheckBox" parent="Trigger/Transform/Canvas&Layer/Canvas/HBC"]
+layout_mode = 2
+button_pressed = true
+text = "Input"
+
+[node name="Draw" type="CheckBox" parent="Trigger/Transform/Canvas&Layer/Canvas/HBC"]
+layout_mode = 2
+button_pressed = true
+text = "Draw"
+
+[node name="Align" type="Button" parent="Trigger/Transform/Canvas&Layer/Canvas/HBC"]
+layout_mode = 2
+text = "Align"
+
+[node name="Layer" type="VBoxContainer" parent="Trigger/Transform/Canvas&Layer"]
+layout_mode = 2
+
+[node name="Position" type="HBoxContainer" parent="Trigger/Transform/Canvas&Layer/Layer"]
+layout_mode = 2
+
+[node name="X" type="SpinBox" parent="Trigger/Transform/Canvas&Layer/Layer/Position"]
+layout_mode = 2
+min_value = -100.0
+step = 0.1
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 0.01
+
+[node name="Y" type="SpinBox" parent="Trigger/Transform/Canvas&Layer/Layer/Position"]
+layout_mode = 2
+min_value = -100.0
+step = 0.1
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 0.01
+
+[node name="Z" type="SpinBox" parent="Trigger/Transform/Canvas&Layer/Layer/Position"]
+layout_mode = 2
+min_value = -100.0
+step = 0.1
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 0.01
+
+[node name="Rotation" type="HBoxContainer" parent="Trigger/Transform/Canvas&Layer/Layer"]
+layout_mode = 2
+
+[node name="X" type="SpinBox" parent="Trigger/Transform/Canvas&Layer/Layer/Rotation"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 1.0
+
+[node name="Y" type="SpinBox" parent="Trigger/Transform/Canvas&Layer/Layer/Rotation"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 1.0
+
+[node name="Z" type="SpinBox" parent="Trigger/Transform/Canvas&Layer/Layer/Rotation"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 1.0
+
+[node name="HBC" type="HBoxContainer" parent="Trigger/Transform/Canvas&Layer/Layer"]
+layout_mode = 2
+
+[node name="Input" type="CheckBox" parent="Trigger/Transform/Canvas&Layer/Layer/HBC"]
+layout_mode = 2
+text = "Input"
+
+[node name="Inherit" type="CheckBox" parent="Trigger/Transform/Canvas&Layer/Layer/HBC"]
+layout_mode = 2
+button_pressed = true
+text = "Inherit "
+
+[node name="Draw" type="CheckBox" parent="Trigger/Transform/Canvas&Layer/Layer/HBC"]
+layout_mode = 2
+button_pressed = true
+text = "Draw"
+
+[node name="Selection" type="VBoxContainer" parent="Trigger/Transform"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="Position" type="HBoxContainer" parent="Trigger/Transform/Selection"]
+layout_mode = 2
+
+[node name="X" type="SpinBox" parent="Trigger/Transform/Selection/Position"]
+layout_mode = 2
+min_value = -100.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 0.01
+
+[node name="Y" type="SpinBox" parent="Trigger/Transform/Selection/Position"]
+layout_mode = 2
+min_value = -100.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 0.01
+
+[node name="Z" type="SpinBox" parent="Trigger/Transform/Selection/Position"]
+layout_mode = 2
+min_value = -100.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 0.01
+
+[node name="Rotation" type="HBoxContainer" parent="Trigger/Transform/Selection"]
+layout_mode = 2
+
+[node name="X" type="SpinBox" parent="Trigger/Transform/Selection/Rotation"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 1.0
+
+[node name="Y" type="SpinBox" parent="Trigger/Transform/Selection/Rotation"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 1.0
+
+[node name="Z" type="SpinBox" parent="Trigger/Transform/Selection/Rotation"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+custom_arrow_step = 1.0
+
+[node name="HBC" type="HBoxContainer" parent="Trigger/Transform/Selection"]
+layout_mode = 2
+
+[node name="Input" type="CheckBox" parent="Trigger/Transform/Selection/HBC"]
+layout_mode = 2
+button_pressed = true
+text = "Input"
+
+[node name="Draw" type="CheckBox" parent="Trigger/Transform/Selection/HBC"]
+layout_mode = 2
+button_pressed = true
+text = "Draw"
+
+[node name="SVC2" type="SubViewportContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+stretch = true
+
+[node name="SV" type="SubViewport" parent="SVC2"]
+world_3d = SubResource("World3D_jhlur")
+handle_input_locally = false
+size = Vector2i(2, 2)
+render_target_update_mode = 4
+
+[node name="Cam" type="Camera3D" parent="SVC2/SV"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 2)
+
+[node name="Rotate" type="RigidBody3D" parent="SVC2/SV"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+gravity_scale = 0.0
+angular_damp = 5.0
+
+[node name="Collision" type="CollisionShape3D" parent="SVC2/SV/Rotate"]
+shape = SubResource("SphereShape3D_veoce")
+
+[node name="Mesh" type="MeshInstance3D" parent="SVC2/SV/Rotate"]
+mesh = SubResource("SphereMesh_361c4")
+surface_material_override/0 = SubResource("ORMMaterial3D_iifin")
+
+[connection signal="gui_input" from="SVC" to="." method="_on_svc_gui_input"]
+[connection signal="value_changed" from="Trigger/Current/Surface/Focus" to="." method="_on_surface_focus_value_changed"]
+[connection signal="pressed" from="Trigger/Current/Surface/Remove" to="." method="_on_surface_remove_pressed"]
+[connection signal="pressed" from="Trigger/Current/Surface/Add" to="." method="_on_surface_add_pressed"]
+[connection signal="value_changed" from="Trigger/Current/Layer/Focus" to="." method="_on_layer_value_changed"]
+[connection signal="pressed" from="Trigger/Current/Layer/Remove" to="." method="_on_layer_remove_pressed"]
+[connection signal="pressed" from="Trigger/Current/Layer/Add" to="." method="_on_layer_add_pressed"]
+[connection signal="item_selected" from="Trigger/Instance/Mode" to="." method="_on_instance_mode_item_selected"]
+[connection signal="pressed" from="Trigger/Instance/Mode" to="." method="_on_instance_mode_pressed"]
+[connection signal="item_selected" from="Trigger/Instance/Class" to="." method="_on_instance_class_item_selected"]
+[connection signal="item_selected" from="Trigger/Focus/Mode" to="." method="_on_focus_mode_item_selected"]
+[connection signal="pressed" from="Trigger/Focus/Mode" to="." method="_on_focus_mode_pressed"]
+[connection signal="toggled" from="Trigger/Focus/Class/Surface" to="." method="_on_focus_class_toggled"]
+[connection signal="toggled" from="Trigger/Focus/Class/Vertex" to="." method="_on_focus_class_toggled"]
+[connection signal="toggled" from="Trigger/Focus/Class/Bone" to="." method="_on_focus_class_toggled"]
+[connection signal="toggled" from="Trigger/Focus/Connectable" to="." method="_on_focus_connectable_toggled"]
+[connection signal="pressed" from="Trigger/Move/Move" to="." method="_on_move_pressed"]
+[connection signal="pressed" from="Trigger/Move/Remove" to="." method="_on_remove_pressed"]
+[connection signal="item_selected" from="Trigger/Paint/Mode" to="." method="_on_paint_mode_item_selected"]
+[connection signal="toggled" from="Trigger/Paint/UV" to="." method="_on_uv_toggled"]
+[connection signal="toggled" from="Trigger/Paint/HBC/Check" to="." method="_on_paint_check_toggled"]
+[connection signal="pressed" from="Trigger/Request/Submit" to="." method="_on_submit_pressed"]
+[connection signal="value_changed" from="Trigger/Camera/Size" to="." method="_on_zoom_value_changed"]
+[connection signal="value_changed" from="Trigger/Camera/Fov" to="." method="_on_fov_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Camera/Perspective/Position/X" to="." method="_on_perspective_camera_transform_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Camera/Perspective/Position/Y" to="." method="_on_perspective_camera_transform_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Camera/Perspective/Position/Z" to="." method="_on_perspective_camera_transform_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Camera/Perspective/Rotation/X" to="." method="_on_perspective_camera_transform_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Camera/Perspective/Rotation/Y" to="." method="_on_perspective_camera_transform_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Camera/Perspective/Rotation/Z" to="." method="_on_perspective_camera_transform_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Camera/Orthogonal/Position/X" to="." method="_on_orthogonal_camera_transform_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Camera/Orthogonal/Position/Y" to="." method="_on_orthogonal_camera_transform_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Camera/Orthogonal/Rotation/X" to="." method="_on_orthogonal_camera_transform_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Camera/Orthogonal/Rotation/Y" to="." method="_on_orthogonal_camera_transform_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Camera/Orthogonal/Rotation/Z" to="." method="_on_orthogonal_camera_transform_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Canvas&Layer/Canvas/Position/X" to="." method="_on_canvas_transform_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Canvas&Layer/Canvas/Position/Y" to="." method="_on_canvas_transform_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Canvas&Layer/Canvas/Position/Z" to="." method="_on_canvas_transform_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Canvas&Layer/Canvas/Rotation/X" to="." method="_on_canvas_transform_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Canvas&Layer/Canvas/Rotation/Y" to="." method="_on_canvas_transform_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Canvas&Layer/Canvas/Rotation/Z" to="." method="_on_canvas_transform_value_changed"]
+[connection signal="toggled" from="Trigger/Transform/Canvas&Layer/Canvas/HBC/Input" to="." method="canvas_input_setter"]
+[connection signal="pressed" from="Trigger/Transform/Canvas&Layer/Canvas/HBC/Align" to="." method="_on_canvas_align_pressed"]
+[connection signal="value_changed" from="Trigger/Transform/Canvas&Layer/Layer/Position/X" to="." method="_on_layer_transform_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Canvas&Layer/Layer/Position/Y" to="." method="_on_layer_transform_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Canvas&Layer/Layer/Position/Z" to="." method="_on_layer_transform_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Canvas&Layer/Layer/Rotation/X" to="." method="_on_layer_transform_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Canvas&Layer/Layer/Rotation/Y" to="." method="_on_layer_transform_value_changed"]
+[connection signal="value_changed" from="Trigger/Transform/Canvas&Layer/Layer/Rotation/Z" to="." method="_on_layer_transform_value_changed"]
+[connection signal="toggled" from="Trigger/Transform/Canvas&Layer/Layer/HBC/Input" to="." method="layer_input_setter"]
+[connection signal="toggled" from="Trigger/Transform/Canvas&Layer/Layer/HBC/Inherit" to="." method="layer_inherit_setter"]
+[connection signal="gui_input" from="SVC2" to="." method="_on_svc_2_gui_input"]

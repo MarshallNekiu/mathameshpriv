@@ -1,0 +1,86 @@
+[gd_scene load_steps=3 format=3 uid="uid://b5mh11cxqyhod"]
+
+[ext_resource type="PackedScene" uid="uid://cciio7nh6gtpa" path="res://scenes/tree.tscn" id="1_xv023"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_bd2c6"]
+
+[node name="Surface" instance=ExtResource("1_xv023")]
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+
+[node name="Name" parent="Control/HBC" index="1"]
+text = "Surface"
+
+[node name="Vertex" type="SpinBox" parent="." index="2"]
+layout_mode = 2
+theme_override_icons/updown = SubResource("ImageTexture_bd2c6")
+allow_greater = true
+editable = false
+prefix = "Vertex"
+
+[node name="Layer" type="GraphNode" parent="." index="3"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+offset_left = 18.0
+offset_top = 70.0
+offset_right = 183.0
+offset_bottom = 189.0
+title = "Layer"
+slot/0/left_enabled = false
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = false
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+
+[node name="Expand" type="Button" parent="Layer" index="1"]
+layout_mode = 2
+text = "Show/Hide"
+
+[node name="VBC" type="VBoxContainer" parent="Layer" index="2"]
+layout_mode = 2
+
+[node name="HBC" type="HBoxContainer" parent="Layer/VBC" index="0"]
+layout_mode = 2
+
+[node name="Index" type="Label" parent="Layer/VBC/HBC" index="0"]
+layout_mode = 2
+text = "0"
+
+[node name="Name" type="LineEdit" parent="Layer/VBC/HBC" index="1"]
+layout_mode = 2
+text = "Layer"
+expand_to_text_length = true
+
+[node name="Visible" type="CheckBox" parent="Layer/VBC/HBC" index="2"]
+layout_mode = 2
+button_pressed = true
+text = "👁️"

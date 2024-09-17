@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://dn0a1311panw8"]
+
+[ext_resource type="Script" path="res://scripts/surface.gd" id="1_rwq6k"]
+[ext_resource type="Texture2D" uid="uid://1idxc54brtnq" path="res://resources/Untitled251_20240729104701.png" id="2_i87wv"]
+[ext_resource type="PackedScene" uid="uid://bedql8vg0av8v" path="res://scenes/geometry.tscn" id="3_tiase"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_j3jry"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_0u4ts"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_agrn7"]
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("2_i87wv")
+uv1_scale = Vector3(0.2, 0.2, 0.2)
+uv1_triplanar = true
+
+[node name="Surface" type="Area3D" node_paths=PackedStringArray("geometry", "vertex_area") groups=["Surface"]]
+script = ExtResource("1_rwq6k")
+geometry = NodePath("Geometry")
+mesh = SubResource("ArrayMesh_j3jry")
+vertex_area = NodePath("Vertex")
+shape = SubResource("ConcavePolygonShape3D_0u4ts")
+material = SubResource("StandardMaterial3D_agrn7")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+shape = SubResource("ConcavePolygonShape3D_0u4ts")
+
+[node name="Geometry" parent="." node_paths=PackedStringArray("surface") instance=ExtResource("3_tiase")]
+surface = NodePath("..")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("ArrayMesh_j3jry")
+
+[node name="Vertex" type="Area3D" parent="." groups=["Surface", "Vertex"]]
+
+[connection signal="ready" from="." to="." method="_update_world"]
+[connection signal="ready" from="Vertex" to="." method="_update_world"]

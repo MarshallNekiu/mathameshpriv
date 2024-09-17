@@ -1,0 +1,288 @@
+[gd_scene load_steps=9 format=3 uid="uid://b5xd15ra7eame"]
+
+[ext_resource type="Script" path="res://scripts/component_loader.gd" id="1_pg6tv"]
+[ext_resource type="Texture2D" uid="uid://bdoj0c37x4e3b" path="res://resources/Untitled252_20240730094554.png" id="2_i23ep"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o4gpp"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nkyre"]
+next_pass = SubResource("StandardMaterial3D_o4gpp")
+transparency = 1
+shading_mode = 0
+albedo_texture = ExtResource("2_i23ep")
+uv1_scale = Vector3(2, 2, 2)
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_nqiqm"]
+
+[sub_resource type="Animation" id="Animation_8miew"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:material_override:uv1_offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_mwvbl"]
+resource_name = "uv_offset"
+length = 5.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:material_override:uv1_offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2.46667, 2.55, 5),
+"transitions": PackedFloat32Array(1, 1.03525e-05, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(1, 1, 1), Vector3(0, 0, 0), Vector3(1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_srcdo"]
+_data = {
+"RESET": SubResource("Animation_8miew"),
+"uv_offset": SubResource("Animation_mwvbl")
+}
+
+[node name="ComponentLoader" type="SubViewport"]
+own_world_3d = true
+size = Vector2i(800, 600)
+script = ExtResource("1_pg6tv")
+
+[node name="VBC" type="VBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Primitive" type="OptionButton" parent="VBC"]
+layout_mode = 2
+selected = 0
+item_count = 4
+popup/item_0/text = "Box"
+popup/item_1/text = "Sphere"
+popup/item_1/id = 1
+popup/item_2/text = "Cylinder"
+popup/item_2/id = 2
+popup/item_3/text = "Torus"
+popup/item_3/id = 3
+
+[node name="VBC" type="VBoxContainer" parent="VBC"]
+layout_mode = 2
+
+[node name="Cube" type="VBoxContainer" parent="VBC/VBC"]
+layout_mode = 2
+
+[node name="Size" type="HBoxContainer" parent="VBC/VBC/Cube"]
+layout_mode = 2
+
+[node name="X" type="SpinBox" parent="VBC/VBC/Cube/Size"]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+step = 0.001
+value = 1.0
+allow_greater = true
+allow_lesser = true
+prefix = "x:"
+
+[node name="Y" type="SpinBox" parent="VBC/VBC/Cube/Size"]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+step = 0.001
+value = 1.0
+allow_greater = true
+allow_lesser = true
+prefix = "y:"
+
+[node name="Z" type="SpinBox" parent="VBC/VBC/Cube/Size"]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+step = 0.001
+value = 1.0
+allow_greater = true
+allow_lesser = true
+prefix = "z:"
+
+[node name="Subdivision" type="HBoxContainer" parent="VBC/VBC/Cube"]
+layout_mode = 2
+
+[node name="X" type="SpinBox" parent="VBC/VBC/Cube/Subdivision"]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+allow_greater = true
+prefix = "sx:"
+
+[node name="Y" type="SpinBox" parent="VBC/VBC/Cube/Subdivision"]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+allow_greater = true
+prefix = "sy:"
+
+[node name="Z" type="SpinBox" parent="VBC/VBC/Cube/Subdivision"]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+allow_greater = true
+prefix = "sz: "
+
+[node name="Sphere" type="VBoxContainer" parent="VBC/VBC"]
+visible = false
+layout_mode = 2
+
+[node name="Size" type="HBoxContainer" parent="VBC/VBC/Sphere"]
+layout_mode = 2
+
+[node name="Radius" type="SpinBox" parent="VBC/VBC/Sphere/Size"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+step = 0.001
+value = 0.5
+allow_greater = true
+allow_lesser = true
+prefix = "radius:"
+
+[node name="Height" type="SpinBox" parent="VBC/VBC/Sphere/Size"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+step = 0.001
+value = 1.0
+allow_greater = true
+allow_lesser = true
+prefix = "height:"
+
+[node name="Subdivision" type="HBoxContainer" parent="VBC/VBC/Sphere"]
+layout_mode = 2
+
+[node name="Segment" type="SpinBox" parent="VBC/VBC/Sphere/Subdivision"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+value = 8.0
+allow_greater = true
+allow_lesser = true
+prefix = "sgmt:"
+
+[node name="Ring" type="SpinBox" parent="VBC/VBC/Sphere/Subdivision"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+value = 4.0
+allow_greater = true
+allow_lesser = true
+prefix = "ring:"
+
+[node name="Hemisphere" type="CheckBox" parent="VBC/VBC/Sphere"]
+layout_mode = 2
+text = "Hemisphere"
+
+[node name="Cylinder" type="VBoxContainer" parent="VBC/VBC"]
+visible = false
+layout_mode = 2
+
+[node name="TopRadius" type="SpinBox" parent="VBC/VBC/Cylinder"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+step = 0.001
+value = 0.5
+allow_greater = true
+allow_lesser = true
+prefix = "tr"
+
+[node name="BottomRadiua" type="SpinBox" parent="VBC/VBC/Cylinder"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+step = 0.001
+value = 0.5
+allow_greater = true
+allow_lesser = true
+prefix = "bt:"
+
+[node name="Height" type="SpinBox" parent="VBC/VBC/Cylinder"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+step = 0.001
+value = 2.0
+allow_greater = true
+allow_lesser = true
+prefix = "height:"
+
+[node name="RadialSegment" type="SpinBox" parent="VBC/VBC/Cylinder"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+value = 8.0
+allow_greater = true
+allow_lesser = true
+prefix = "sgmt:"
+
+[node name="Ring" type="SpinBox" parent="VBC/VBC/Cylinder"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+allow_greater = true
+allow_lesser = true
+prefix = "ring:"
+
+[node name="CapTop" type="CheckBox" parent="VBC/VBC/Cylinder"]
+layout_mode = 2
+button_pressed = true
+text = "CapTop"
+
+[node name="CapBottom" type="CheckBox" parent="VBC/VBC/Cylinder"]
+layout_mode = 2
+button_pressed = true
+text = "CapBottom"
+
+[node name="Torus" type="VBoxContainer" parent="VBC/VBC"]
+visible = false
+layout_mode = 2
+
+[node name="InnerRadius" type="SpinBox" parent="VBC/VBC/Torus"]
+layout_mode = 2
+step = 0.001
+value = 1.0
+allow_greater = true
+prefix = "ir:"
+
+[node name="OuterRadius" type="SpinBox" parent="VBC/VBC/Torus"]
+layout_mode = 2
+step = 0.001
+value = 2.0
+allow_greater = true
+prefix = "or:"
+
+[node name="Ring" type="SpinBox" parent="VBC/VBC/Torus"]
+layout_mode = 2
+value = 16.0
+allow_greater = true
+prefix = "ring:"
+
+[node name="RingSegment" type="SpinBox" parent="VBC/VBC/Torus"]
+layout_mode = 2
+value = 8.0
+allow_greater = true
+prefix = "rseg:"
+
+[node name="Submit" type="Button" parent="VBC"]
+layout_mode = 2
+text = "Generate"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_nkyre")
+mesh = SubResource("BoxMesh_nqiqm")
+skeleton = NodePath("../VBC")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.866025, -0.211309, 0.453154, 0, 0.906308, 0.422618, -0.5, -0.365998, 0.784886, 2.5, 2.5, 5)
+current = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_srcdo")
+}
+autoplay = "uv_offset"
+
+[connection signal="item_selected" from="VBC/Primitive" to="." method="_on_primitive_item_selected"]
+[connection signal="pressed" from="VBC/Submit" to="." method="_on_submit_pressed"]

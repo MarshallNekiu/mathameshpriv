@@ -1,0 +1,51 @@
+[gd_scene load_steps=3 format=3 uid="uid://cciio7nh6gtpa"]
+
+[ext_resource type="Script" path="res://scripts/branch.gd" id="1_h2vgi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8m185"]
+expand_margin_top = 8.0
+expand_margin_bottom = 8.0
+
+[node name="TreeNode" type="GraphNode"]
+custom_minimum_size = Vector2(129, 32)
+offset_right = 160.0
+offset_bottom = 47.0
+theme_override_styles/titlebar = SubResource("StyleBoxFlat_8m185")
+slot/0/left_enabled = false
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = false
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+script = ExtResource("1_h2vgi")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+
+[node name="HBC" type="HBoxContainer" parent="Control"]
+layout_mode = 0
+offset_left = -16.0
+offset_top = -40.0
+offset_right = 105.0
+offset_bottom = -8.0
+mouse_filter = 2
+
+[node name="Index" type="Label" parent="Control/HBC"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+
+[node name="Name" type="LineEdit" parent="Control/HBC"]
+layout_mode = 2
+text = "TreeNode"
+expand_to_text_length = true
+
+[connection signal="node_selected" from="." to="." method="_on_node_selected"]
+[connection signal="renamed" from="." to="." method="_on_renamed"]
+[connection signal="resized" from="Control/HBC" to="." method="_on_hbc_resized"]
+[connection signal="focus_exited" from="Control/HBC/Name" to="." method="_on_name_focus_exited"]
+[connection signal="text_submitted" from="Control/HBC/Name" to="." method="_on_name_text_submitted"]

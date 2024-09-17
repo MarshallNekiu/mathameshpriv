@@ -1,0 +1,34 @@
+[gd_scene load_steps=2 format=3 uid="uid://dwlb7ahka7w0e"]
+
+[ext_resource type="PackedScene" uid="uid://cciio7nh6gtpa" path="res://scenes/tree.tscn" id="1_ndu4e"]
+
+[node name="Bone" instance=ExtResource("1_ndu4e")]
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+
+[node name="Name" parent="Control/HBC" index="1"]
+text = "Bone"
+
+[node name="Attachment" type="HBoxContainer" parent="." index="2"]
+visible = false
+clip_contents = true
+layout_mode = 2
+
+[node name="Weight" type="SpinBox" parent="Attachment" index="0"]
+layout_mode = 2
+
+[node name="Weight2" type="SpinBox" parent="Attachment" index="1"]
+layout_mode = 2
+
+[node name="Weight3" type="SpinBox" parent="Attachment" index="2"]
+layout_mode = 2
+
+[node name="Weight4" type="SpinBox" parent="Attachment" index="3"]
+layout_mode = 2

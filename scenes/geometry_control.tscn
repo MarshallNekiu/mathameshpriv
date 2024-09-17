@@ -1,0 +1,79 @@
+[gd_scene load_steps=2 format=3 uid="uid://cv2sydch0iqor"]
+
+[ext_resource type="Script" path="res://scripts/geometry_control.gd" id="1_87pkh"]
+
+[node name="GeometryControl" type="GridContainer"]
+size_flags_vertical = 4
+columns = 10
+script = ExtResource("1_87pkh")
+
+[node name="Instance" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Mode" type="OptionButton" parent="Instance"]
+layout_mode = 2
+selected = 0
+allow_reselect = true
+item_count = 2
+popup/item_0/text = "Add"
+popup/item_1/text = "Connect"
+popup/item_1/id = 1
+
+[node name="Class" type="OptionButton" parent="Instance"]
+layout_mode = 2
+selected = 0
+allow_reselect = true
+item_count = 3
+popup/item_0/text = "Point"
+popup/item_1/text = "Line"
+popup/item_1/id = 1
+popup/item_2/text = "Circle"
+popup/item_2/id = 2
+
+[node name="Focus" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Mode" type="OptionButton" parent="Focus"]
+layout_mode = 2
+selected = 0
+allow_reselect = true
+item_count = 2
+popup/item_0/text = "Select"
+popup/item_1/text = "Deselect"
+popup/item_1/id = 1
+
+[node name="VBC" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Move" type="Button" parent="VBC"]
+layout_mode = 2
+text = "Move"
+
+[node name="Rotation" type="CheckBox" parent="VBC"]
+layout_mode = 2
+button_pressed = true
+text = "Rotation"
+
+[node name="Direction" type="CheckBox" parent="VBC"]
+layout_mode = 2
+text = "Direction"
+
+[node name="VBC2" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Reverse" type="Button" parent="VBC2"]
+layout_mode = 2
+text = "Reverse"
+
+[node name="Rest" type="Button" parent="VBC2"]
+layout_mode = 2
+text = "Rest"
+
+[connection signal="item_selected" from="Instance/Mode" to="." method="_on_instance_mode_item_selected"]
+[connection signal="item_selected" from="Instance/Class" to="." method="_on_instance_class_item_selected"]
+[connection signal="item_selected" from="Focus/Mode" to="." method="_on_focus_mode_item_selected"]
+[connection signal="pressed" from="VBC/Move" to="." method="_on_move_pressed"]
+[connection signal="toggled" from="VBC/Rotation" to="." method="_on_rotation_mode_changed" unbinds=1]
+[connection signal="toggled" from="VBC/Direction" to="." method="_on_rotation_mode_changed" unbinds=1]
+[connection signal="pressed" from="VBC2/Reverse" to="." method="_on_reverse_pressed"]
+[connection signal="pressed" from="VBC2/Rest" to="." method="_on_rest_pressed"]
